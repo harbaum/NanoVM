@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.eclipse.nanovm.feature_0.0.1.jar" id="org.eclipse.nanovm.feature" version="0.0.1">
+      <category name="NanoVM"/>
+   </feature>
+   <category-def name="NanoVM" label="NanoVM"/>
+</site>

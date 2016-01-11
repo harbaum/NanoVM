@@ -1,0 +1,10 @@
+#
+# Formatter.native
+#
+
+class nanovm/util/Formatter 44
+
+method <init>:()V 0
+method format:(ILjava/lang/String;)Ljava/lang/String; 1
+method format:(ZLjava/lang/String;)Ljava/lang/String; 2
+method format:(FLjava/lang/String;)Ljava/lang/String; 3

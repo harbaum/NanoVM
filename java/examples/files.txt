@@ -1,0 +1,16 @@
+Testfile(s)               Testing
+---------------------------------------------------------------------------
+HelloWorld                basic functionality
+icmp                      Compare instructions, branches
+arithmetic                Arithmetic instructions (ok to fail in regression
+			  test due to overflow in 15 bit types)
+DivByZero                 Arithmetic division by zero
+count                     Arithmetic, branching
+StringAndHeapTest         BufferedString class and heap stress test
+			  (garbage collection)
+MethodCall                Static methods, arithmetic, branching
+SelfInstance              Constructor, field access
+Erathostenes              Arrays, strings, heap (garbage collector)
+Fibonacci                 Recursion (Stack)
+QuickSort                 Recursion (Stack), Arrays
+OneClass/AnotherClass     Multiple class invokation

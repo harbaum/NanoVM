@@ -1,0 +1,10 @@
+#
+# Port.native
+#
+
+class nanovm/avr/Port 22
+
+method setInput:(I)V 1
+method setOutput:(I)V 2
+method setBit:(I)V 3
+method clrBit:(I)V 4

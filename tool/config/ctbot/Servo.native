@@ -1,0 +1,12 @@
+#
+# Servo.native
+#
+
+class  nanovm/ctbot/drivers/Servo 40
+
+method <init>:()V 0
+method set1:(I)V 1
+method set2:(I)V 2
+method get1:()I 3
+method get2:()I 4
+

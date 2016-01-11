@@ -1,0 +1,222 @@
+[[Category:Projekte]]
+[[Category:AVR]]
+''von [[Benutzer:Till Harbaum]]''
+
+Die Homepage der NanoVM ist [http://www.harbaum.org/till/nanovm http://www.harbaum.org/till/nanovm], dort findet sich auch immer die aktuellste Version zum Download.
+
+Die NanoVM ist eine Implementierung einer einfachen virtuellen Java-Maschine. Mit der NanoVM ausgerüstete Geräte lassen sich damit in Java programmieren.
+
+Die NanoVM wurde für den [[AVR]] Atmega8 des Asuro implementiert, ist aber mit wenigen Änderungen auch für allgemeine AVR-Projekte zu verwenden, auf anderen AVR-Prozessoren und sogar ganz anderen Architekturen verwenden. Beispiele für den Einsatz der NanoVM z.B. auf dem Atmega32 werden mitgeliefert. Da die NanoVM unter GPL steht sind die nötigen Anpassungen für weitere Plattformen leicht selbst durchzuführen.
+
+=Überblick=
+
+Die NanoVM-Distribution besteht aus zwei Teilen, der NanoVM selbst, die auf dem Zielsystem installiert wird und dem NanoVMTool, einem Konverter und Upload-Werkzeug.
+
+Die NanoVM selbst besteht aus einigen weitgehend plattformunabhängigen Komponenten (der VM selbst, Speichermanagement etc) und einer Sammlung nativer Methoden. Die nativen Methoden stellen bei der Verwendung auf einem eingebetteten System die Verbindung zur Hardware her, sind also stark plattformabhängig. Die nativen Methoden können sehr anwendungsspezifisch sein. Für den Asuro-Roboter stellen zum Beispiel die in der NanoVM implementierten nativen Asuro-spezifischen Methoden einen sehr bequemen und direkten Zugriff auf die Funktionen des Asuro bereit. Allgemeiner gehaltene native Methoden ermöglichen auch universell nutzbare Versionen der NanoVM. In der Regel ist die Benutzung allgemeiner gehaltener nativer Methoden für den Java-Programmierer aufwändiger, weil er sehr viel direkter mit den Hardwarefunktionen arbeitet und eine solche NanoVM keine komfortablen anwendungsspezifischen Routinen beinhaltet. Wird die NanoVM auf diese Weise sehr nah an ein Gerät wie den Asuro angepasst, dann enthält die NanoVM selbst viele Spezialfunktionen für die zu steuernde Hardware, um die sich der Anwender in der Folge dann nicht mehr selbst kümmern muss. Eine generische Version der NanoVM kennt keine Details über die verwendete Hardware und die Implementierung komplexer Funktion erfolgt komplett in Java selbst und ist nicht Teil der NanoVM, sondern des darin laufenden Java-Programmes. Dafür ist solche eine generische NanoVM flexibler und nicht auf eine bestimmte Anwendung oder Hardware festgelegt.
+
+Zur Zeit verfügt die NanoVM über eine weitgehende Unterstützung durch Asuro-spezifische native Methoden. Aber auch allgemeine (generische) Methoden existieren zum Port-Zugriff, für den UART, den Timer sowie für ADC- und PWM-Einheiten. Auch einfache Text-LCDs werden auf einigen Plattformen unterstützt. Die NanoVM eignet sich damit bereits für einfache eigene Hardwareprojekte. Sie ist auf leichte Erweiterung ausgelegt und weitere native Methoden zum Beispiel zum Ansprechen der SPI-Schnittstelle lassen sich mit wenig Aufwand nachrüsten.
+
+Das Upload- und Konvertertool NanoVMTool ist nötig, da die NanoVM selbst bisher keine Java-Classfiles parsen kann, sondern ein vereinfachtes internes Dateiformat, das sogenannte NVM-Format, verwendet. Die Verwendung eines einfacheren Formats war nötig, um Codespeicher auf dem AVR zu sparen.
+
+Für den den reinen Anwender stellt sich die eigentliche Verwendung der NanoVM recht einfach dar. Er übersetzt sein Java-Programm mit einem Standard-Java-Compiler in sog. Classfiles und lädt diese mit Hilfe des NanoVMTools auf ein mit der NanoVM ausgerüstetes Gerät z.B. per RS232 (COM-Port). Die Haupthürde dürfte dabei die Installation der NanoVM auf dem Prozessor des Zielsystems sein, wofür weiterhin die bei der Mikrocontroller-Programmierung üblichen Programmieradapter nötig sind. Einfacher dürfte für den Anfänger daher in vielen Fällen der Erwerb fertig mit der NanoVM versehener Prozessoren z.B. für den Asuro sein (ggf. Email-Anfrage an den Autor stellen). Allerdings ist so ein Service nur für durch passende native Methoden unterstützte Plattformen sinnvoll. Zur Zeit gilt dies für den Asuro, den Mega8 und den Mega32.
+
+=Zielgruppen=
+
+Die NanoVM hat zwei Zielgruppen. Zum einen sind es reine Java-Programmierer, die die NanoVM nutzen wollen, um das Zielsystem direkt in Java zu programmieren. Zum anderen sind es Entwickler, die die NanoVM erweitern oder auf eine neue Plattform portieren wollen bzw. den Benutzern ihrer Geräte eine Java-Schnittstelle bieten wollen.
+
+Der reine Java-Programmierer benötigt eine Version der NanoVM, die mit nativen Methoden für seine Anwendung ausgestatet wurde. Zur Zeit verfügt die NanoVM z.B. für den Asuro über eine weitgehende Unterstützung durch native Methoden. Allgemeine native Methoden existieren zur Zeit für einfache Timer-Funktionalität und zum Zugriff auf die AVR-Ports, die serielle Schnittstelle, sowie PWM und ADC-Einheiten. Die NanoVM lässt sich in der aktuellen Version zum bequemen Steuern des Asuro nutzen, aber auch für eigene Atmega8- und Atmega32-basierte Projekte verwenden, sowie ein angeschlossenenes Text-[[LCD]] ansteuern. Weitere Plattformen sowie Unterstützung für weitere Hardware wird nach und nach in das Projekt einfliessen.
+
+Für Entwickler, die sich in Java und C auskennen bietet die NanoVM zur Zeit die Möglichkeit, aktiv am Innenleben eines Java-fähigen Gerätes zu arbeiten. Durch den geringen Code-Speicher der einfachen AVR-Prozessoren ist die NanoVM zwangsläufig sehr einfach gehalten und lässt sich leicht verstehen und erweitern. Die Erweiterung der NanoVM um weitere native Klassen wie zum Beispiel zum Zugriff auf die [[SPI]]-Schnittstelle ist sehr leicht möglich.
+
+=Benutzung unter Linux=
+
+Die NanoVM wurde unter Linux entwickelt und kann nativ unter Linux laufen gelassen werden. Für erste Schritte mit der NanoVM ist unter Linux keine AVR-Hardware nötig. Soll die NanoVM unter Linux das Fibonacci-Beispiel aus dem examples-Verzeichnis des NanoVM-Quell-Archivs ausführen, reicht es, in das Verzeichnis vm/build/unix zu wechseln und ''make Fibonacci-run'' einzugeben. Ein paar Blicke in die laufenden NanoVM erlaubt die Debug-Option, die sich ebenfalls bequem per Makefile mit ''make Fibonacci-debug'' anwenden lässt.
+
+Für die Verwendung auf dem AVR, der Übersetzung der AVR-Variante und dem einfachem Upload von Java-Programmen auf einen mit der NanoVM ausgrüsteten AVR existieren bequem unter Linux zu benutzende Makefile-Einträge:
+
+* make uisp: Übersetzung und Installation der NanoVM
+* make upload-''JAVAPROJEKT'': Upload eines neuen Java-Programmes
+
+In nanovm/doc werden zwei Shell-Scripts mitgeliefert, die den zur Weiterentwicklung der NanoVM nötigen AVR-Compiler (avr-gcc) und weitere nötige Tools installieren bzw. die die nötige Java-Comm-Erwiterung installieren.
+
+=Benutzung unter Windows=
+
+Die Nutzung unter Windows ist bisher kaum getestet. Unter tool/asuro_upload.bat findet sich eine Batch-Datei, die den Upload von Java-Programmen auf ein mit der NanoVM ausgestattetes Gerät erleichtert. Die Übersetzung der NanoVM mit WinAVR und die Installation der NanoVM mit Hilfe eines Windows-PCs ist bisher nicht getestet/dokumentiert, sollte aber keine grosse Hürde darstellen.
+
+=NanoVMTool=
+
+Das NanoVMTool wird von der NanoVM benötigt, da die NanoVM selbst nicht mit üblichen Java-Classfiles umgehen kann. Classfiles enthalten u.a. Daten, die von der NanoVM nicht benötigt werden und den knappen Speicher der NanoVM unnötig füllen. Das NanoVMTool entfernt die unbenötigten Informationen und fasst den Programmcode aller von einer Anwendung benutzten Klassen in einer sogenannten NVM-Datei zusammen und lädt sie ggf. auf das Zielsystem hoch. Der Anwender kommt also mit dem NVM-Dateiformat in der Regel nicht direkt in Kontakt.
+
+Das NanoVMTool wird als fertig übersetztes JAR-Binary mir den Quellen ausgeliefert. Wer das NanoVMTool dennoch selbst übersetzen oder verändern will wechselt dazu ins Verzeichnis tool/src und gibt unter Linux ''make'' ein (Windows bisher nicht getestet/dokumentiert). Das JAR-File wird darauf neu erstellt. Wenn dabei 8 Fehler auftreten, führen sie vorher bitte ''javac *.java'' aus.
+
+=Die NanoVM=
+
+Die NanoVM muss passend für das angestrebte Zielsystem übersetzt werden. Zur Zeit wird der Asuro unterstützt sowie eine einfache AVR Atmega8-Testplatine. Für jedes unterstütze Zielsystem existiert ein eigenes Verzeichnis unter nanovm/vm/build. Dort liegen ein Makefile und eine config.h-Datei, die die Konfiguration für diese Plattform enthalten. Die eigentlichen Quellen der VM liegen unter nanovm/vm/src. 
+
+=Komponenten der NanoVM=
+
+Zur Zeit taugt die NanoVM vor allem als Test- und Lehrsystem und eignet sich hervorragend für alle, die mal einen Blick ins "innere" einer Java-fähigen Maschine werfen wollen. Dieses Kapitel widmet sich diesem Innenleben der NanoVM und ist weniger für den reinen Java-Programmierer gedacht, als für den interessierten Entwickler, der die NanoVM verstehen und erweitern will.
+
+Die NanoVM selbst besteht aus mehreren Funktionsblöcken:
+
+* Der VM selbst (vm.c),
+* dem Speichermanagement (heap.c),
+* dem Maschinenstapel (stack.c),
+* den Zugriffsroutinen auf die interne NVM-Datei (nvmfile.c),
+* der Array-Verwaltung (array.c),
+* dem Upload-Tool (loader.c) und
+* nativen Methoden (native_xxx.c).
+
+==Die VM (vm.c)==
+
+Die VM selbst ist der Kern und gleichzeitig der einfachste Teil der NanoVM. Sie liest jeweils einen Befehl (den sog. Java-Bytecode-Opcode) nach dem andern und führt die entsprechenden Funktionen aus. Die VM greift dazu bei Bedarf auf die übrigen Funktionsblöcke zurück.
+
+In der Header-Datei vm.h ist '''der''' interne Datentyp vm_t der NanoVM definiert. Zur Zeit ist dies ein vorzeichenbehafteter 16-Bit Integer. Dieser Datentyp wird in der NanoVM für fast alles verwendet. Er wird ebenso zum Rechnen verwendet, wie zum Speichern von Daten auf dem Heap oder Stack (siehe unten). Unter anderem werden mit diesem Datentyp auch Referenzen auf Objekte gespeichert. Wenn Objektreferenzen nicht von anderen Variablen zu unterscheiden sind ergibt sich in den meisten Fällen kein Problem. Das Java-Programm "weiss", auf was es im konkreten Fall zugreift, da der Java-Kompiler entsprechenden Code erzeugt hat. Unter der Annahme, dass der vom Java-Compiler erzeugt Code korrekt ist kann man davon ausgehen, dass aus dem Zugriff auf ein Stack- oder Heapelement abzulesen ist, ob auf Variablen oder Objektreferenzen zugegriffen wird. Eine ausgewachsene Java-VM speichert dennoch mit jedem Wert auch den Typ ab, damit ist es möglich, fehlerhaften Java-Code zu erkennen. Die NanoVM spart Heap- und Stackspeicher, indem sie keine solche Typ-Information speichert und auf die Möglichkeit des Abfangens von Fehlern falscher Typ-Verwendung verzichtet. Ganz ohne Typinformation kommt auch die NanoVM nicht aus. Java bietet die sogenannte Garbage-Collection. Das ist ein Mechanismus, bei dem unbenutzte Objekte automatisch aus dem Speicher geräumt werden. Garbage-Collection ist zum Beispiel bei der Verwendung von Zeichenketten (Strings) auf speicherarmen Systemen unverzichtbar, da beim Verarbeiten von Strings oft neue Strings angelegt und alte verworfen werden ist eine Garbage-Collection unverzichtbar, wenn nicht binnen kürzester Zeit der Speicher ausgehen soll. Die NanoVM verfügt daher über eine einfache Garbage-Collection. Die Garbage-Collection muss dazu aber in der Lage sein, zu erkennen, ob auf dem Heap oder Stack liegende Werte Objektreferenzen sind oder nicht. Existieren noch Referenzen auf ein Objekt, so darf es nicht entfernt werden. Die NanoVM löst das Problem, indem sie das oberste Bit des vm_t-Typen als Markerbit verwendet. Ist das oberste Bit gesetzt, dann handelt es sich um eine Referenz, anderfalls nicht. Daraus ergibt sich, dass nur 15 Bit zum Arbeiten zur Verfügung stehen. Das Resultat ist die 15-Bit-Arithmetik der NanoVM, die mit Werten von -16384 bis 16383 arbeiten kann. Durch eine Erweiterung des Haupt-Datentyps auf zum Beispiel 32 Bits ließe sich der Wertebereich der Arithmetik erweitern. Dies ginge jedoch auf Kosten eines für jeden abgelegten Wert höheren Speicherbedarfs. Aufgrund des geringen Speichers des Atmega8 verzichtet die NanoVM bisher auf diese Möglichkeit.
+
+===Implementierungsdetails===
+
+Üblicherweise würde man den Befehlsdekoder, der die einzelnen Opcodes analysiert, in einem grossen C-Switch-Statement implementieren. Die NanoVM verwendet statt dessen eine Serie von einzelnen if-Abfragen, denn Versuche haben gezeigt, dass der so erzeugte Binärcode etwas kompakter ist, was bei den 8kBytes  Codespeicher des ATmega8 sehr wichtig ist. Der Nachteil eines etwas langsamer arbeitenden Codes wird dabei in Kauf genommen.
+
+==Der Heap (heap.c)==
+
+Der Heap ist der Datenspeicher von Java-Programmen, die von der NanoVM ausgeführt werden. Fordert ein Programm ein neues Datenobjekt an, so wir auf dem Heap der entsprechende Platz dafür belegt. Arbeitet ein Programm zum Beispiel mit Zeichenketten (Strings), so werden diese auf dem Heapspeicher abgelegt, dort bearbeitet und von dort zur Ausgabe geleitet.
+
+Der gesamte Heap-Speicher wird in Datenblöcken verwaltet. Die effektive Verwaltung von Heaps ist eine Wissenschaft für sich und Gegenstand vieler Forschungsarbeiten. Das Ziel einer Heapverwaltung ist üblicherweise, schnell auf Datenblöcke zugreifen zu können und schnell und effektiv freie Speicherblöcke zusammenzulegen bzw, einzelne Blöcke freizugeben. Dabei geht es in der Regel darum, auch grosse Speichermengen effektiv zu verwalten.
+
+Glücklicherweise reicht der auf dem ATmega8 zur Verfügung stehende Codespeicher nicht, um in die Versuchung zu kommen, eine komplexe Heap-Verwaltung zu implementieren. Stattdessen wurde eine sehr triviale Heap-Verwaltung implementiert. Da der ATmega8 nur über 768 Bytes als Heap zu verwaltenden Speicher verfügt wird die NanoVM durch eine nicht sehr effektive Heapverwaltung nicht nennenswert eingeschränkt.
+
+Aus Gründen, die bei der Erklärung des Stacks (s.u.) deutlich werden, ist der Heap-Speicher so organisiert, dass er immer von den höheren Adresse her belegt wird. Jedes neue Objekt wird an der höchstmöglichen freien Adresse belegt und freier und frei werdender Speicher an der niedigsten Adresse gesammelt.
+
+===Garbage Collection===
+
+Die Heap-Verwaltung der NanoVM verwaltet den gesamten Heap (auch den nicht belegten Teil) als eine Menge von Blöcken, die jeweils mit einer eindeutigen Referenz und einer Länge versehen sind. Eine besondere Referenz (HEAP_ID_FREE, 0) verweist auf den Block, der am Beginn des Heap-Speichers liegt und den unbenutzten Speicher repräsentiert. Es kann im Heap nur einen leeren Block geben, denn Java-Programme geben selbst keinen Speicher frei. Dies ist Aufgabe der Garbage-Collection, die immer dannktiviert wird, wenn mehr freier Speicher benötigt wird, als im Block des unbenutzten Speichers zur Verfügung steht. In diesem Fall sucht die Garbage-Collection nach unbenutzten Speicherblöcken, also Speicherblöcken, auf die keinerlei Referenz mehr verweist und fügt diese dem Block des freien Speichers hinzu. Da die dabei frei werdenden Blöcke nicht unbedingt direkt neben dem Block des freien Speichers liegt müssen ggf. andere, noch verwendete Blöcke verschoben werden. Am Ende der Garbage-Collection sind alle nicht mehr referenzierten Blöcke gelöscht und der ihnen zugewiesene Speicher zum Block des freien Speichers an der unteren Speichergrenze hinzugefügt. Die noch verwendeten Blöcke sind ggf. im übrigen Speicher am oberen Speicherende kompakt zusammengeschoben worden. Der gesamte Heapspeicher muss immer vollständig durch die beschriebenen Datenblöcke erfasst sein (zur Not in einem einzigen Block, der die freien Teile zusammenfasst). In der Debug-Variante macht die NanoVM einige zusätzliche Tests, um die Konsistenz des Heaps und seiner Verwaltungsstrukturen zu überprüfen.
+
+===Grenzen der Code-Überprüfung===
+
+Auch hier werden aufgrund der Einschränkungen der NanoVM zur Laufzeit nicht alle Fehlerfälle überprüft. Die NanoVM muss daher davon ausgehen können, dass der auszuführende Java-Bytecode nicht fehlerhaft ist und z.B. Objektgrößen korrekt berechnet werden und Zugriffen nur innerhalb der Größe des Objektes erfolgen. Es wird also ein korrekt funktionierender Java-Compiler als Code-Quelle vorausgesetzt. Davon kann mit recht hoher Sicherheit ausgegangen werden, die NanoVM ist aber in keiner Weise gegen vorsätzlich manipulierten Code geschützt und kann z.B. durch manipulierten Code zum Absturz gebracht werden. Dies ist bei Geräten dieser Klasse aber deutlich weniger kritisch, als zum Beispiel bei einem PC. Während ein PC, der über manipulierten Java-Code z.B. von einer Webseite, u.a. mit vorsätzlichem Schadcode infiziert werden kann, eine echte Gefahr darstellt ist diese Gefahr bei der NanoVM wesentlich geringer. Ein Angreifer, dem ermöglicht wird, eigenen Code auf ein mit der NanoVM ausgerüstetes Gerät zu laden, hat per Definition sowieso die volle Kontrolle über das Gerät. Die zusätzliche Möglichkeit, das Gerät durch fehlerhaften Code zum Absturz zu bringen gibt ihm keine weitergehenden Möglichkeiten. Es ist mit fehlerhaften Code in keinem Fall möglich, das Gerät oder die NanoVM selbst zu beschädigen. Diese liegen geschützt im Flash-Speicher und lassen sich in jedem Fall durch einen Reset in den Ausgangszustand zurückbringen.
+
+===Vorsicht vor der Garbage-Collection!===
+
+Da bei der Garbage-Collection Speicherblöcke ihre Position im Speicher ändern können, muss bei der Arbeit mit dem Inhalt eines Blockes regelmässig die Adresse neu bestmmt werden. Die Adresse des Inhaltes eine Blockes stellt der Heap auf Anfrage zur Verfügung. Es muss aber sichergestellt sein, dass die Adresse nicht über Momente hinaus verwendet wird, in denen die Garbage-Collection die Postion eines Blockes im Speicher verändert haben kann. Da die Garbage-Collection nur angestossen wird, wenn neuer Speicher belegt werden soll, muss nur in diesem Fall Vorsicht walten. Ein Beispiel ist die Routine native_java_lang_stringbuffer_invoke() in native_stdio.c. In dieser Routine werden unter anderem zwei Strings zu einem neuen aneinandergehängt. Dazu besorgt sich die Routine zunächst die Adressen der beiden zu verbindenden Strings. Sie bestimmt deren Längen und belegt ausreichend neuen Speicher für einen String der nötigen Gesamtlänge. Daraufhin kopiert die Routine beiden Quellstrings hintereinander an das Ziel. Aber Achtung: Dazu muss vor dem Kopieren erneut die Adresse der beiden Quellstrings bestimmt werden, denn während des Anlegens des Platzes für den Zielstring können sich die Postitionen der Quellestrings verändert haben. Werden die Adressen der Quellstrings erneut von Heap angefordert, so werden dabei die ggf. geänderten Adressen berücksichtigt und es tritt kein Fehler auf.
+
+==Der Stack (stack.c)==
+
+Der sogenannte Stapelspeicher oder neudeutsch Stack ist neben dem Heap der zweite Speicherbereich, den die NanoVM zum Speichern von Werten und Objektreferenzen nutzt. Auf dem Stack werden Zwischenergebnisse abgelegt, Rücksprungadresse gespeichert etc. Der Java-Programmierer kommt mit dem Stack nicht direkt in Berührung, trotzdem sollte er bei so einfachen Systemen wie der NanoVM eine Vorstellung davon haben, was auf dem Stack vor sich geht.
+
+Wichtig ist vor allem, eine grobe Vorstellung vom Stackbedarf des eigenen Programmes zu haben. Jeder Methodenaufruf in der NanoVM legt zur Zeit drei intern benötigte Werte zu je 16 Bits auf dem Stack ab. Bei jedem Mehtodenaufruf werden also sechs Bytes auf dem Stack abgelegt. Diese Bytes werden nach Beendigung des Methodenaufrufes wieder freigegeben. Wichtig ist dieser Stackbedarf vor allem bei der Verwendung von Rekursionen (wie im Beispiel examples/Fibonacci.java). Da die NanoVM auf dem ATmega8 über insgesamt nur 768 Bytes Speicher verfügt und der Stack in einem Teil dieses Speichers liegt ist Sparsamkeit hier oberstes Gebot.
+
+===Der Stack als dynamischer Teil des Heaps===
+
+Der Stack stellt neben dem Heap den zweiten Speicherbereich dar. Üblicherweise wird auf einem Computersystem für den Stack eine feste Größe von einigen Kilobytes vorgesehen und der übrige Systemspeicher dem Heap zugewiesen. Die NanoVM ist aber auf so kleine Systeme ausgelegt, dass eine Aufteilung des geringen RAM-Speichers in feste Stack- und Heapbereiche je nach Anwendung zu Engpässen in dem einen oder anderen Bereich führen würde. Bei der NanoVM wird daher der Stack als ein spezieller Teil des Heaps gehandhabt. Java unterstützt dieses Vorgehen, indem der Java-Compiler den maximalen Stackbedarf einer jeden Methode im Voraus berechnet. Es ist damit der NanoVM möglich, immer ausreichend Speicherplatz vom unteren Ende des Heaps (dort liegt üblicherweise der Block des freien Speichers) anzuzweigen. In der NanoVM wird dieser Vorgang als "stehlen" bezeichnet. Auf diese Weise bedienen sich Stack und Heap des gleichen Speichers und solange überhaupt noch freier Speicher zu Verfügung steht kann dieser sowohl für neue Objekte auf dem verwendet werden, als auch als Stack für den Aufruf von Methoden verwendet werden.
+
+==Interne Java-Programmspeicherverwaltung (nvmfile.c)==
+
+Wie schon erwähnt verwendet die NanoVM intern ein eigenes Dateiformat. Die auf einem mit der NanoVM ausgerüsteten Gerät gespeicherte Datei liegt im sogenannten NVM-Format, dem NanoVM-eigenen Format, vor. Die Programmspeicherverwaltung der NanoVM regelt den Zugriff auf diese Datei. In der aktuellen Version der NanoVM wird dazu der 512 Byte grosse EEPROM-Speicher des ATmega8 verwendet. Die Programmspeicherverwaltung stellt einfache Routinen zum lesenden Zugriff auf die einzelnen Elemente der gespeicherten Datei zur Verfügung sowie eine Schreibroutine, um die Installation neuer Daten zu ermöglichen.
+
+Die Programmspeicherverwaltung ist der Ansatzpunkt, wenn es darum geht, der NanoVM den Umgang mit einem alternativen Programmspeicher beizubringen. Das kann der ATmega-interne Flash-Speicher genauso sein, wie zum Beispiel ein externes EEPROM oder ähnlich. Zum Beispiel ist auch die Verwendung einer Speicherkarte möglich, allerdings ist die Programmspeicherveraltung der NanoVM bisher nicht in der Lage, echte Classfiles zu verwenden. Stattdessen würde auf der Speicherkarte eine mit dem NanoVMTool aus den Classfiles gewonnene NVM-Datei eingesetzt.
+
+==Bootloader (loader.c)==
+
+Der Bootloader ist die Programmroutine, die die Installation neuer Java-Programme in Form von NVM-Dateien erlaubt. Die NanoVM verwendet dazu ein XModem-ähnliches Protokoll. Nur ähnlich ist es deshalb, weil im Gegensatz zum XModem mit 128 Bytes Blockgröße bei der NanoVM nur eine Blockgröße von 16 Bytes verwendung findet. Dies ist deshalb notwendig, da die NanoVM um Speicher zu sparen nur einen kleinen RS232-Empfangspuffer von 32 Bytes Größe verwendet. Diese Größe verhindert eine hohe Datentransferrate, für die Anwendung ist das ausreichend.
+
+Der Bootloader wartet nach Systemstart drei Sekunden auf die Anfrage zur Datenübertragung durch das NanoVMTool. Sobald dessen Anforderung empfangen wird startet der Bootloader den Datenempfang. Wird innerhalb der drei Sekunden keine Anforderung empfangen, dann wird das gespeicherte Java-Programm gestartet.
+
+==Arrayverwaltung (array.c)==
+
+Datenarrays benötigen unter Java eine spezielle Behandlung. Der Java-Bytecode enthält spezielle Befehle zur Behandlung von eindimensionalen Arrays. Die NanoVM legt für jedes Array einen Speicherblock im Heap an und verwaltet das Array dort. Mehrdimensionale Arrays werden vom Java-Compiler auf eindimensionale Arrays abgebildet, so dass sich eine JVM auch bei der Verwendung von mehrdimensionalen Arrays nur mit eindimensionalen Arrays auseinandersetzen muss.
+
+==Native Methoden (native_xxx.c)==
+
+Der wohl interessanteste Angriffspunkt für die Erweiterung der NanoVM sind die nativen Methoden. Dies ist der Punkt, an dem neue native Methoden integriert werden können. Da diese neuen Methoden im Gegensatz zu echten Java-Methoden innerhalb der NanoVM in C implementiert sind haben sie vollen Zugriff auf die Hardware des verwendeten AVR-Prozessors. Auf diese Weise lassen sich Routinen implementieren, die zum Beispiel den Zugriff auf die Ports des AVR ermöglichen, Timer steuern können, die PWM-Hardware ansteuern etc etc. Auch komplexere Methoden zum Zugriff auf z.B. ein LCD sind so zu realisieren.
+
+Intern verwaltet die NanoVM Methoden und Klassen durch einen 16 Bit grossen Identifier, der die Methode und ihre Klasse eindeutig identifiziert. Die obersten 8 Bit stehen dabei für die Klasse, die unteren 8 für die Methode. Die Zuordnung von Klassen und Methoden erfolgt vom Entwickler willkürlich, wobei die NanoVM zur Zeit 240 native Klassen mit IDs >= 16 unterstützt. Die Klassenidentifier von 0 bis 15 sind für das NanoVMTool reserviert, das damit die bis zu 16 vom Benutzer erzeugten Classfiles kennzeichnet, die es zur NVM-Datei zusammenfasst. Die nativen IDs werden in der Datei native.h vermerkt. Da die Klassenidentifier eindeutig sind, sollten Erweiterungen ggf. dem Autor zugänglich gemacht werden, damit neue Identifier in die offizielle NanoVM-Distribution aufgenommen werden können und es keine Mehrfachbelegungen gibt. Sehr kritisch sind überschneidungen aber nicht, denn diese Identifier werden nur intern verwendet und erst direkt beim Upload passend zum ausgewählten Zielsystem gesetzt. Allerdings sind unterschiedliche Klassen und Methoden mit gleichen Identifiern nicht in ein und demselben Projekt verwendbar, weshalb die Doppelverwendung vermieden werden sollte.
+
+Neue native Klassen müssen an drei Stellen bekannt gemacht werden:
+* In einer Java-Datei, die native Java-Stubs enthält (Beispiel: java/native/asuro/Asuro.java),
+* im der Konfiguration des NanoVMTool (Beispiel: tool/config/Asuro.native) und
+* in der NanoVM selbst (Beispiel: vm/src/native.h vm/src/native_impl.[ch] und vm/src/native_asuro.[ch]).
+
+Die Identifier in vm/src/native.h und der NanoVMTool-Konfiguration müssen zueinander passen.
+
+Sind die Änderungen vorgenommen, dann muss lediglich die NanoVM neu übersetzt werden. Der Java-Compiler akzeptiert die neuen Methoden, sobald er die Java-Stubs lädt. Das NanoVMTool übersetzt die Methoden-Referenzen entsprechend der Konfiguration in passende Klassen- und Methodenidentifier. Die NanoVM bzw. deren Routine vm/src/native_impl.c schliesslich erkennt die Identifier und verzweigt in die entsprechende Routine in vm/src/native_xxx.c
+
+===Asuro-spezifische native Methoden (Klasse nanovm.asuro.Asuro)===
+
+* public static native void statusLED(int state);
+  Schaltet die Status-LED des Asuro um. Die folgenden vier Werte sind
+  für state möglich: OFF, RED, GREEN, YELLOW
+
+* public static native void wait(int msec);
+  Wartet die angegebene Zeit in Millisekunden.
+
+* public static native void motor(int left, int right);
+  Schaltet die Motoren des Asuro. Mögliche Werte liegen im Bereich
+  -255 (max. Geschwindigkeit rückwärts) bis +255 (max. Geschwindigkeit
+  vorwärts)
+
+* public static native void lineLED(int state);
+  Schaltet die untere LED zur Beleutung des Untergrunds ein (ON) oder 
+  aus (OFF).
+
+* public static native void backLED(int left, int right);
+  Schaltet die beiden hinteren LEDs ein (ON) oder aus (OFF).
+
+* public static native int lineSensor(int sensor);
+  Liefert einen Integer-Wert, der zur Helligkeit proportional ist, die der
+  entsprechende Sensor feststellt. Mögliche Werte für Sensor: LEFT, RIGHT
+
+* public static native int motorSensor(int sensor);
+  Fragt die Lichtschranken an den Motorencodern ab. Mögliche Werte für 
+  Sensor: LEFT, RIGHT
+
+* public static native int getSwitches(int mode);
+  Fragt die Kollisionstaster an der Vorderseite des Asuro ab. Wird für mode 
+  ANY angegeben, dann liefert diese Methode 0 wenn kein Taster betätigt ist,
+  andernfalls 1. Ist mode auf SELECTIVE gesetzt, dann liefert diese Methode 
+  einen Bitvektor zurück, der den Zustand jedes einzelnen Tasters anzeigt. Die  
+  SELECTIVE-Funktionalität wird durch eine Analog-Digital-Wandlung erreicht, die 
+  etwas zeitaufwändiger ist, als die Abfrage mit ANY. Ausserdem ist die 
+  Erkennung einzelner Taster in der Hardware nicht ganz zuverlässig und die 
+  Taster, die den unteren Bits zugeordnet sind werden ggf. nicht immer korrekt 
+  erkannt.
+
+=Hardware=
+
+Die NanoVM läuft auf unterschiedlichster Hardware. Zum einen ist das natürlich der Asuro, der als kompletter Bausatz zu kaufen ist. Es ist aber auch möglich, eigene Hardware mit der NanoVM zu betreiben. 
+
+==Atmega8-Testplatine==
+
+Der Autor verwendet zum Beispiel die folgende Schaltung, um den allgemeinen Mega8-Port der NanoVM zu testen. Sie bietet eine RS232-Schnittstelle zum Testen der UART-Funktionen sowie ein paar LEDs, u.a. am PWM-Ausgang sowie ein Poti an einem der Analog-Eingänge. Diese Hardware wird unterstützt durch die NanoVM-Konfiguration im Verzeichnis vm/build/avr_mega8. Sie ist direkt kompatibel mit den meisten NanoVM-Java-Beispielen (u.a. java/examples/HelloWorld.java, java/examples/PwmDemo.java und java/examples/AdcDemo.java).
+
+[[Bild:mega8.gif]]
+
+==Atmega32-Testplatine mit LCD==
+
+Eine zweite Testplatine des Autors basiert auf dem Atmega32. Dieses Board enthält ein einfaches Text-LCD basierend auf dem Hitachi HD44780 (das ist der Baustein, auf dem die meisten einfachen Text-LCDs basieren). Die NanoVM enthält im Verzeichnis vm/build/avr_mega32_lcd eine passende Konfiguration. Diese Schaltung ist unter anderem kompatibel mit den Beispielen java/examples/LedBlink.java und java/examples/LcdDemo.java
+
+[[Bild:Mega32lcd.gif]]
+
+=Beispiele=
+
+Die NanoVM kommt mit diversen Java-Beispielen im Verzeichnis java/examples. Je nach Beispiel lassen sich diese Beispiele auf einzelnen oder sogar auf allen von der NanoVM unterstützen Plattformen verwenden. Das hängt davon ab, ob das entsprechende Beispiel über entsprechende native Methoden direkt auf eine bestimmte Hardware zugreift oder nicht.
+
+Einige Beispiele:
+
+'''java/examples/Erathostenes.java''': Java-Implementierung des Siebs des Erathostenes zur Primzahlenbestimmung. Dieses Beispiel verwendet keine NanoVM-spezifischen Klassen und Methoden und läuft daher auf allen mit der NanoVM ausgerüsteten Geräten sowie auf allen anderen Java-Geräten (also auch solchen, die nicht auf der NanoVM basieren). Zur Ausgabe wird je nach Plattform z.B. die serielle Schnittstelle verwendet. Ähnliche Beispiele: java/examples/Fibonacci.java, java/examples/HelloWorld.java und java/examples/QuickSort.java
+
+'''java/examples/Rot13.java''': Einfache Implementierung der ROT13-Verschlüsselung, wie sie häufig im Internet für Rätsellösungen etc. verwendet wird. Dieses Beispiel verwendet ebenfalls keine NanoVM-spezifischen Klassen und Methoden und läuft daher auf allen Plattformen. Zur Aus- und Eingabe wird wenn nötig die serielle Schnittstelle verwendet. Ähnliches Beispiel: java/examples/ConsoleEcho.java
+
+'''java/examples/AsuroLine.java''': Ein Linienfolger für den Asuro. Da dieses Programm native Methoden für den Asuro nutzt läuft es nur auf einem mit der NanoVM ausgerüsteten Asuro-Roboter. Ähnliche Beispiele: java/examples/AsuroLED.java und ava/examples/AsuroMotor.java
+
+'''java/examples/AdcDemo.java''': Ein Beispiel für ein Programm, das mit Hilfe der generischen nativen Methoden für den AVR direkt auf die AVR-Hardware zugreift. Dieses Beispiel läuft daher nur auf mit der generischen NanoVM ausgerüsteten AVR CPUs (zur Zeit werden Atmega8 und Atmega32 unterstützt). Ähnliche Beispiele: java/examples/PwmDemo.java und java/examples/LedBlink.java
+
+'''java/examples/LcdDemo.java''': Ein Beispiel für ein Programm, das die nativen Methoden zum Zugriff auf ein 2*20-Text-LCD nutzt. Dieses Programm läuft nur auf Plattformen, die ein entsprechendes Text-LCD besitzen und über eine Version der NanoVM verfügen, die LCD-Support enthält (siehe auch http://www.mikrocontroller.net/tutorial/lcd, wobei das dort beschriebene LCD nur mit vier Datenbits angeschlossen ist, die NanoVM aber zur Zeit ein über 8 Bit angeschlossenes LCD erwartet).
+
+=Links=
+
+==Allgemein==
+*[http://java.sun.com/docs/books/vmspec/ Suns Spezifikation der Java VM]
+*[http://www.harbaum.org/till/nanovm Homepage der NanoVM]
+==Forum==
+*http://www.mikrocontroller.net/forum/read-1-230597.html
+*http://www.mikrocontroller.net/forum/read-1-233746.html#233746

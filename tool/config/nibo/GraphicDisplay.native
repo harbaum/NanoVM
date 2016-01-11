@@ -1,0 +1,13 @@
+#
+# GraphicDisplay.native
+#
+
+class  nanovm/nibo/drivers/GraphicDisplay 30
+
+method <init>:()V 0
+method clear:()V 1
+method gotoXY:(II)V 2
+method print:(Ljava/lang/String;)V 3
+method setProportional:(Z)V 4
+method getProportional:()Z 5
+

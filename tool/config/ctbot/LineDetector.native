@@ -1,0 +1,13 @@
+#
+# LineDetector.native
+#
+
+class  nanovm/ctbot/drivers/LineDetector 37
+
+method <init>:()V 0
+method updateLeft:()V 1
+method updateRight:()V 2
+method getLeft:()I 3
+method getRight:()I 4
+method setEnabled:(Z)V 5
+method getEnabled:()Z 6

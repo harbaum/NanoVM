@@ -1,0 +1,15 @@
+#
+# Asuro.native
+#
+
+class  nanovm/asuro/Asuro 28
+
+method <init>:()V 0
+method statusLED:(I)V 1
+method wait:(I)V 2
+method motor:(II)V 3
+method lineLED:(I)V 4
+method backLED:(II)V 5
+method lineSensor:(I)I 6
+method motorSensor:(I)I 7 
+method getSwitches:(I)I 8

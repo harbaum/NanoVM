@@ -1,0 +1,10 @@
+#
+# IrTransceiver.native
+#
+
+class  nanovm/nibo/drivers/IrTransceiver 33
+
+method <init>:()V 0
+method getCommand:()I 1
+method sendCommand:(I)V 2
+

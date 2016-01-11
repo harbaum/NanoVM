@@ -1,0 +1,13 @@
+#
+# WheelEncoder.native
+#
+
+class  nanovm/ctbot/drivers/WheelEncoder 42
+
+method <init>:()V 0
+method getLeftInc:()I 1
+method getRightInc:()I 2
+method setEnabled:(Z)V 3
+method getEnabled:()Z 4
+method getLeftSpeed:()I 5
+method getRightSpeed:()I 6

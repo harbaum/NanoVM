@@ -1,0 +1,8 @@
+#
+# Pwm.native
+#
+
+class nanovm/avr/Pwm 25
+
+method setPrescaler:(I)V 1
+method setRatio:(I)V 2

@@ -1,0 +1,43 @@
+NanoVM manual  (c) 2005 by Till Harbaum <till@harbaum.org>
+----------------------------------------------------------
+
+The NanoVM has been written under Linux. It shouldn't be a problem to compile
+the code under Windows. However, things like the Makefiles etc may require
+some tweaking.
+
+1. Compile
+----------
+
+The NanoVM consists of two main parts: The VM itself and the helper
+application. You need first to compile the NanoVMTool. To do this change into
+the directory tool/src and type make. You'll need a java sdk with the
+javax.comm installed. See the readme.txt in the tool directory for details.
+
+Now you need to compile the NanoVM itself. Go to the appropriate build
+directory (e.g. vm/build/asuro for the asuro) and type make. This will build
+the NanoVM for that specifig plattform based on the configuration (Makefile
+and config.h) in that directory. A "make uisp" will install the NanoVM on the
+target plattform using the uisp program. 
+
+See the config files to learn e.g. which baud rates are being used on
+the different target plattforms.
+
+2. Toolchain
+------------
+
+You'll need a avr cross compiler toolchain. Under Linux you might use the 
+install_avr_gcc.sh script.
+
+3. Uploading new files
+----------------------
+
+Once the NanoVM is installed and running you might use the Makefiles
+to upload other software. Go to the build directory again and type "make
+upload-classname" where classname may be the name of the class in the 
+examples directory. E.g. typing "make upload-Fibonacci" to install the
+Fibonacci test.
+
+4. This manual is incomplete
+----------------------------
+
+Feel free to expand it while your learn to use the NanoVM.

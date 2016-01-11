@@ -1,0 +1,13 @@
+#
+# PrintStream.native
+#
+
+class java/io/PrintStream 18
+
+method println:(Ljava/lang/String;)V 1
+method println:(I)V 2
+method println:(C)V 3
+method print:(Ljava/lang/String;)V 4
+method print:(I)V 5
+method print:(C)V 6
+method format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream; 7

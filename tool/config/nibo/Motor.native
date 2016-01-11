@@ -1,0 +1,12 @@
+#
+# Motor.native
+#
+
+class  nanovm/nibo/drivers/Motor 38
+
+method <init>:()V 0
+method setParameters:(III)V 1
+method setPWM:(II)V 2
+method setSpeed:(II)V 3
+method stop:()V 4
+

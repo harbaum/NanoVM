@@ -1,0 +1,30 @@
+#
+# Math.native
+#
+
+class nanovm/lang/Math 43
+
+method abs:(F)F 1
+method abs:(I)I 2
+method acos:(F)F 3
+method asin:(F)F 4
+method atan:(F)F 5
+method atan2:(FF)F 6
+method ceil:(F)F 7
+method cos:(F)F 8
+method exp:(F)F 9
+method floor:(F)F 10
+method log:(F)F 11
+method max:(FF)F 12
+method max:(II)I 13
+method min:(II)I 14
+method min:(FF)F 15
+method pow:(FF)F 16
+method random:()F 17
+method rint:(F)F 18
+method round:(F)I 19
+method sin:(F)F 20
+method sqrt:(F)F 21
+method tan:(F)F 22
+method toDegrees:(F)F 23
+method toRadians:(F)F 24

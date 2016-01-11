@@ -1,0 +1,11 @@
+#
+# Lcd.native
+#
+
+class nanovm/io/Lcd 27
+
+method clear:()V 1
+method gotoYX:(II)V 2
+method print:(Ljava/lang/String;)V 3
+method print:(I)V 4
+method print:(C)V 5

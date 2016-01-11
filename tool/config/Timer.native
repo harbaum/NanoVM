@@ -1,0 +1,10 @@
+#
+# Timer.native
+#
+
+class nanovm/avr/Timer 23
+
+method setSpeed:(I)V 1
+method get:()I 2
+method wait:(I)V 3
+method setPrescaler:(I)V 4

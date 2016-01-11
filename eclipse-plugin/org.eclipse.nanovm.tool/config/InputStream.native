@@ -1,0 +1,8 @@
+#
+# InputStream.native
+#
+
+class java/io/InputStream 19
+
+method available:()I 1
+method read:()I 2

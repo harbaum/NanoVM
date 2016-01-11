@@ -1,0 +1,17 @@
+#
+# Motor.native
+#
+
+class  nanovm/ctbot/drivers/Motor 38
+
+method <init>:()V 0
+method setLeft:(I)V 1
+method setRight:(I)V 2
+method getLeft:()I 3
+method getRight:()I 4
+method setLeftSpeed:(I)V 5
+method setRightSpeed:(I)V 6
+method getLeftSpeed:()I 7
+method getRightSpeed:()I 8
+method stop:()V 9
+

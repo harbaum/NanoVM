@@ -1,0 +1,13 @@
+#
+# Mouse.native
+#
+
+class  nanovm/ctbot/drivers/Mouse 39
+
+method <init>:()V 0
+method getX:()I 1
+method getY:()I 2
+method getQuality:()I 3
+method requestPicture:()V 4
+method getPixel:()I 5
+method reset:()V 6

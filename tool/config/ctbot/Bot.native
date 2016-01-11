@@ -1,0 +1,12 @@
+#
+# Bot.native
+#
+
+class  nanovm/ctbot/drivers/Bot 28
+
+method <init>:()V 0
+method getError:()I 1
+method setExtension1Enabled:(Z)V 2
+method getExtension1Enabled:()Z 3
+method setExtension2Enabled:(Z)V 4
+method getExtension2Enabled:()Z 5

@@ -1,0 +1,176 @@
+NanoVM Communication Protocol v1.0 (currently still default)
+============================================================
+
+Serial stream connections only, firmware upload only,
+based on XMODEM.
+
+
+
+Proposed NanoVM Communication Protocol v2.0 (under development)
+===============================================================
+
+Principles based on SMBus and similar. Multi-bus implementation
+possible.
+
+
+Operations
+----------
+
+  Write operation:
+    Master sends 8-bit command code and command specific data to
+	a slave identified by a 7-bit address. Address space should be
+	SMBus compatible if possible in specific implementation.
+
+  Read operation:
+    Master sends command code to and receives command specific data
+	from addressed slave.
+
+  Error checking and handling:
+    Bus dependent
+
+
+
+Commands
+--------
+
+Command codes should be SMBus compatible where possible.
+
+Preliminary Command List:
+  CMD_FOPEN = 0x70
+  write(CMD_FOPEN, fileId)     open  the file with id fileId
+
+  CMD_FCLOSE = 0x71
+  write(CMD_FCLOSE, fileId)    close the currently open file
+
+  CMD_RWFILE = 0x72
+  read (CMD_RWFILE, length)    read data from the currently open file
+  write(CMD_RWFILE, data+)     write data to the currently open file
+
+  CMD_RUNLVL = 0x7E
+  read (CMD_RUNLVL, 1)         get the system runlevel
+  write(CMD_RUNLVL, runlevel)  set the system runlevel
+
+
+Possible future functionality:
+  Get/Set Digital I/O, Get/Set Analog I/O, Debugging Functions, ...
+	
+
+Example, Firmware Upload Procedure:
+  write(CMD_FOPEN, 0)       // open firmware (file-id 0)
+  write(CMD_RWFILE, data+)  // write some data to firmware
+  write(CMD_RWFILE, data+)  // write more data to firmware
+  write(CMD_RWFILE, data+)  // write more data to firmware
+  ...
+  write(CMD_FCLOSE)         // close firmware
+  write(CMD_RUNLVL, 0/6)    // set system runlevel to halt/reset
+
+
+
+Implementation on serial buses like RS-232, RS-485, etc.
+--------------------------------------------------------
+
+Reliability:
+  Hardened for faulty media types with possible
+  complete or fragmentary echo and frequent loss of
+  data. Suitable for transmission over optical channels
+  with possible reflexes.
+
+  
+Write operation:
+  Master write query:
+    DLE LE LEr RRRRNNN0 AAAAAAA0 (CMD DATA*)? CRC-L CRC-H
+
+  Slave response to write:
+    SYN LE LEr RRRRNNN1 CRC-L CRC-H
+
+
+Read operation:
+  Master read query:
+    DLE LE LEr RRRRNNN0 AAAAAAA1 (CMD RSP?)? CRC-L CRC-H
+
+  Slave response to read:
+    SYN LE LEr RRRRNNN1 DATA* CRC-L CRC-H
+
+
+Error signal (slave to master):
+  SYN LE LEi RRRRNNN1 DATA* CRC-L CRC-H
+  Transmission error signal: Empty message is emty, or first DATA
+  byte = 0.
+  Other error: first DATA byte != 0, detailed error reporing
+  not specified yet.
+
+
+Special behavior:
+  Slave may signal power-up/reset by sending SYN. Slave may only
+  accept read/write operations at that time. Connection may be used
+  for other purposes if no queries are received after sending SYN.
+  Not possible on multi-slave buses like RS-485.
+
+
+Values:
+  DLE      ASCII Data-Link-Escape, 0x10
+  SYN      ASCII Sync, 0x16
+
+  LE       Message length including ADR, RSP, CMD, DATA, CRC
+           (0 <= LE <= 0x7F, higher length values reserved for future
+		   extensions)
+  LEr      LE repeated
+  LEi      LE inverted (bitwise)
+
+  RRRR     Reserved for future extensions (must be 0000 for now)
+  
+  NNN      Message ID (rolls over on 0x7)
+
+  AAAAAAA  Slave address (default: 0010000), SMBus compatible 
+
+  CMD      Command code (if LE>=1), may be omitted to ping the slave
+
+  DATA*    LE-2 Data bytes, only used when writing
+
+  RSP      Expected data length in slave response, only used when reading
+  
+  CRC-L    Low-byte of CRC (FCS-16), CRC includes everything
+           except DLE/SYN start-byte
+  CRC-H    High-byte of CRC
+
+
+Communication strategy:
+  Master:
+    - On faulty connections: Ignore garbage, search for messages
+	  in received serial data.
+    - Received correct response: Start next operation
+    - Received response with unexpected message number: Ignore
+    - Received invalid response (CRC-Error): Repeat operation
+    - Received transmission error response: Repeat operation
+    - Received other error response: Application dependent
+  
+  Slave:
+    - On faulty connections: Ignore garbage, search for messages
+	  in received serial data.
+    - Received correct query: Process command, send response
+    - Received correct repeated query: Repeat response
+    - Received invalid query (CRC-Error): send transmission error
+
+
+Implementation on I2C-Bus/SMBus
+-------------------------------
+Complete read/write operation realized as SMBus compliant
+block read/write with CRC-8 PEC. Slave signals error with NACK.
+
+  
+
+Implementation on SPI-Bus
+-------------------------
+Slave addressing via CS.
+Complete Query+Response realized as Sequence of
+R/W-Command code and Address byte on MOSI and data
+on MOSI or MISO depending on read or write. Details and
+CRC-handling to be specified.
+
+
+
+Implementation on CAN-Bus
+-------------------------
+Read/Write operations could be implemented via CANopen
+SDO read/write or similar. Command code to dictionary
+entry mapping will be necessary. Details to be specified.

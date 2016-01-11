@@ -1,0 +1,21 @@
+#
+# AVR.native
+#
+
+class nanovm/avr/AVR 21
+
+method getClock:()I 1
+
+# AVR supports 8 ports
+field portA:Lnanovm/avr/Port; 0
+field portB:Lnanovm/avr/Port; 1
+field portC:Lnanovm/avr/Port; 2
+field portD:Lnanovm/avr/Port; 3
+field portE:Lnanovm/avr/Port; 4
+field portF:Lnanovm/avr/Port; 5
+field portG:Lnanovm/avr/Port; 6
+field portH:Lnanovm/avr/Port; 7
+
+# AVR supports two PWM units
+field pwm0:Lnanovm/avr/Pwm;   0
+field pwm1:Lnanovm/avr/Pwm;   1

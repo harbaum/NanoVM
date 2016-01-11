@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.jdt.core.classpathContainerInitializer">
+      <classpathContainerInitializer
+            class="org.eclipse.nanovm.internal.ui.classpath.NanoVMClasspathContainerInitializer"
+            id="org.eclipse.nanovm.ui.nanovmcontainer"/>
+   </extension>
+   <extension
+         id="nanovm"
+         name="NanoVM Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="org.eclipse.nanovm.internal.ui.project.NanoVMProjectNature"/>
+      </runtime>
+      <requires-nature id="org.eclipse.jdt.core.javanature"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.nanovm.ui.category"
+            name="NanoVM"/>
+      <wizard
+            canFinishEarly="true"
+            category="org.eclipse.nanovm.ui.category"
+            class="org.eclipse.nanovm.internal.ui.project.NewNanoVMProjectWizard"
+            hasPages="true"
+            icon="icons/eclipse.gif"
+            id="org.eclipse.nanovm.ui.newproject"
+            name="NanoVM Project"
+            project="true"/>
+   </extension>
+   
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.nanovm.internal.ui.launch.NanoVMLauncher"
+            id="org.eclipse.nanovm.ui.nanovmlauncher"
+            modes="run, debug"
+            name="NanoVM">
+      </launchConfigurationType>
+   </extension>	
+   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.nanovm.internal.ui.launch.NanoVMLaunchTabGroup"
+            id="org.eclipse.nanovm.ui.nanovmlauncher.tabgroup"
+            type="org.eclipse.nanovm.ui.nanovmlauncher"/>
+   </extension>   
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+        icon="icons/eclipse.gif"
+        configTypeID="org.eclipse.nanovm.ui.nanovmlauncher"
+        id="org.eclipse.nanovm.ui.nanovmlauncher.image">
+    </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.eclipse.nanovm.internal.ui.launch.NanoVMLaunchShortcut"
+            icon="icons/eclipse.gif"
+            id="org.eclipse.nanovm.ui.nanovmlauncher.shortcut"
+            label="NanoVM"
+            modes="run,debug">
+         <perspective id="org.eclipse.jdt.ui.JavaPerspective"/>
+         <perspective id="org.eclipse.jdt.ui.JavaHierarchyPerspective"/>
+         <perspective id="org.eclipse.jdt.ui.JavaBrowsingPerspective"/>
+         <perspective id="org.eclipse.debug.ui.DebugPerspective"/>
+         <contextualLaunch>
+           <enablement>
+             <with variable="selection">
+               <count value="1"/>
+               <iterate>
+                <or>
+               	  <test property="org.eclipse.jdt.launching.hasMain"/>
+               	  <and>
+               	     <test property="org.eclipse.jdt.launching.isContainer"/>
+               	     <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.eclipse.jdt.core.javanature"/>
+               	     <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.eclipse.nanovm.ui.nanovmnature"/>
+               	  </and>
+               	</or>
+               </iterate>
+               </with>
+           </enablement>
+  		 </contextualLaunch>         
+       </shortcut>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.nanovm.internal.ui.config.editor.ConfigEditor"
+            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+            default="true"
+            extensions="config, native"
+            icon="icons/eclipse.gif"
+            id="org.eclipse.nanovm.ui.configeditor"
+            name="NanoVM Configuration Editor"/>
+   </extension>
+
+</plugin>

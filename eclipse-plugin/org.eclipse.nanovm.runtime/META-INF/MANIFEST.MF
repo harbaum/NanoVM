@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: NanoVM Runtime Plug-in
+Bundle-SymbolicName: org.eclipse.nanovm.runtime
+Bundle-Version: 0.0.1
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime
+Eclipse-LazyStart: true
+Bundle-Vendor: tugstugi@yahoo.com
+Export-Package: org.eclipse.nanovm.runtime
+Bundle-Activator: org.eclipse.nanovm.runtime.NanoVMRuntime

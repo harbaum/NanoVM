@@ -1,0 +1,10 @@
+#
+# ShutterSensor.native
+#
+
+class  nanovm/ctbot/drivers/ShutterSensor 41
+
+method <init>:()V 0
+method getState:()Z 1
+method setEnabled:(Z)V 2
+method getEnabled:()Z 3

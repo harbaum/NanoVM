@@ -1,0 +1,9 @@
+This directory contains the vm build directories:
+
+asuro:          The DLR robot is based on a Mega8
+avr_mega8:      Generic mega8 based plattform
+avr_mega32_lcd: Generic mega32 based platform with LCD
+ctbot:          The c't-Bot is based on an ATmega32
+unix:           Run/test the vm native under unix (for debugging)
+ldscripts:      The optimizations required to run the vm on a mega8
+                require special linker scripts

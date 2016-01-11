@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: NanoVM Tool Plug-in
+Bundle-SymbolicName: org.eclipse.nanovm.tool
+Bundle-Version: 0.0.1
+Bundle-Activator: org.eclipse.nanovm.tool.NanoVMTool
+Bundle-Vendor: tugstugi@yahoo.com
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.nanovm.tool

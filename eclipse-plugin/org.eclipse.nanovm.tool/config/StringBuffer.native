@@ -1,0 +1,13 @@
+#
+# StringBuffer.native
+#
+
+class java/lang/StringBuffer 20
+
+method <init>:()V 0
+method <init>:(Ljava/lang/String;)V 1
+method append:(Ljava/lang/String;)Ljava/lang/StringBuffer; 2
+method append:(I)Ljava/lang/StringBuffer; 3
+method append:(C)Ljava/lang/StringBuffer; 4
+method toString:()Ljava/lang/String; 5
+method append:(F)Ljava/lang/StringBuffer; 6

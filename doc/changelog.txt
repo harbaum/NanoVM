@@ -1,0 +1,77 @@
+Version 1.6 (2007-07-07)
+=================
+* Nibo robot support
+* Asuro ATmega168 support
+* Virtual machine source folder cleanup
+* New html class documentation (javadoc)
+* updated install_avr_gcc script to install gcc-4.1.2, GDB=gdb-6.6,
+  avr-libc-1.4.6 and avrdude-5.4
+
+Version 1.5.1 (2007-03-05)
+==========================
+* bugfix release
+* added java/examples/ctbot/utils folder to make_tarball script (thanks to Lasse Lambrecht)
+
+
+Version 1.5 (2007-02-12)
+========================
+* c't-Bot support
+* Floating point is now functional
+* 31-bit constant values
+* Several new op-codes implemented (lookupswitch, dup*, astore*, aload*,
+  ifnull, ifnonnull and floatingpoint op-codes)
+* Built-in nanovm.lang.Math library
+* Built-in nanovm.util.Formatter library for formatted output of
+  floating point, boolean and integer values with java-like syntax
+* Compatible with Java 5.0
+* Some checks of nvm bytecode compatibility with NanoVM compile options
+* Bytecode may be optinal stored in flash memory
+
+
+Version 1.4 (2006-06-13)
+========================
+* NanoVM 1.4, NanoVMTool 1.4
+* A new and more reliable upload protocol by Oliver Schulz
+* Code cleanups by Oliver Schulz
+* Float and 31 bit integer support by Nils Springob
+* Various small bug fixes
+
+
+Version 1.3.2 (2005-12-17)
+==========================
+* NanoVM 1.3, NanoVMTool 1.3
+* Switched to rxtx for java rs232 support (thanks to Oliver Schulz for this hint)
+* NanoVMTool now runs under Linux, Windows and MacOS
+
+
+Version 1.3.1 (2005-12-04)
+==========================
+* NanoVM 1.3, NanoVMTool 1.2
+* Generic native LCD methods
+* Example configuration for Atmega32
+* Schematics for test boards for Atmega8 and Atmega32
+* Expanded documentation (see wiki (german))
+
+
+Version 1.3 (2005-12-01)
+========================
+* NanoVM 1.3, NanoVMTool 1.2
+* Generic ATmega8 classes for PWM and ADC
+* Simple InputStream support (serial input)
+* Added dup2 instruction and typecast instructions
+* GPL licensing verified
+
+
+Version 1.2 (2005-09-26)
+========================
+* NanoVM 1.2, NanoVMTool 1.1
+* seperate stack management
+* fixed Asuro compile
+
+
+Version 1.1 (2005-09-15)
+========================
+* NanoVM 1.1, NanoVMTool 1.1
+* initial source release
+* complete VM under GPL
+

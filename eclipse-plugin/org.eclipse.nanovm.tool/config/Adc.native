@@ -1,0 +1,10 @@
+#
+# Adc.native
+#
+
+class nanovm/avr/Adc 26
+
+method setPrescaler:(I)V 1
+method setReference:(I)V 2
+method getValue:(I)I 3
+method getByte:(I)I 4
